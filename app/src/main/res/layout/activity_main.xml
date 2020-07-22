@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#111111"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/calcBtn"
+        android:layout_width="281dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#EEEEEE"
+        android:fontFamily="@font/autour_one"
+        android:text="Påbörja lagindelning deluxe"
+        android:textColor="#111111"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/teams" />
+
+    <EditText
+        android:id="@+id/text"
+        android:layout_width="375dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints=""
+        android:background="#EEEEEE"
+        android:ems="10"
+        android:fontFamily="@font/autour_one"
+        android:inputType="textMultiLine"
+        android:textAlignment="viewStart"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/teams"
+        android:layout_width="70dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="16dp"
+        android:background="#EEEEEE"
+        android:ems="10"
+        android:fontFamily="@font/autour_one"
+        android:inputType="numberSigned"
+        android:text="2"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+</androidx.constraintlayout.widget.ConstraintLayout>
