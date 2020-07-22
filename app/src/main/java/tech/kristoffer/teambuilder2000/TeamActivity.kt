@@ -29,7 +29,7 @@ class TeamActivity : AppCompatActivity() {
     }
 
     private fun createTeams() {
-        val shuffledPlayers = playerNames.shuffled()
+        val shuffledPlayers = playerNames.filter { it.isNotBlank() }.shuffled()
         //om antalet lag är 1 under antalet spelare så tar vi en spelare i taget
         //tills vi har teamNumber-1, sen blir resterande sista laget
         //annars används inbyggda windowed
