@@ -2,7 +2,6 @@ package tech.kristoffer.teambuilder2000
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.activity_team.*
 import kotlin.math.ceil
@@ -51,7 +50,7 @@ class TeamActivity : AppCompatActivity() {
             shuffledPlayers.windowed(limit, limit, true)
         }
 
-        val arrayAdapter = TeamAdapter(this, R.layout.list_team, teams)
+        val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, teams)
         lstview.adapter = arrayAdapter
     }
 

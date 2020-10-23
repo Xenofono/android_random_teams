@@ -20,10 +20,11 @@ class MainActivity : AppCompatActivity() {
         val text = findViewById<EditText>(R.id.text)
         val teams = findViewById<EditText>(R.id.teams)
         val btn = findViewById<Button>(R.id.calcBtn)
-        btn.setOnClickListener{ view ->
+        btn.setOnClickListener{
             val numTeams: Int = teams.text.toString().toInt()
             val names: List<String> = text.text.split("\\s+".toRegex())
             if(numTeams <= names.size && numTeams >= 1){
+
                 val menuIntent = Intent(this, TeamActivity::class.java)
                 menuIntent.putStringArrayListExtra("list", ArrayList(names))
                 menuIntent.putExtra("teams", numTeams)
