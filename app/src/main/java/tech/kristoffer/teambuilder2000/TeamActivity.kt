@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.activity_team.*
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.ceil
 
 
@@ -14,6 +16,7 @@ class TeamActivity : AppCompatActivity() {
     lateinit var playerNames: ArrayList<String>
     var teamNumber: Int = 0
 
+    @ExperimentalStdlibApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (supportActionBar != null)
@@ -27,11 +30,12 @@ class TeamActivity : AppCompatActivity() {
         createTeams()
     }
 
+    @ExperimentalStdlibApi
     private fun createTeams() {
         val shuffledPlayers = playerNames.filter { it.isNotBlank() }
             .map {
                 it.trim()
-                it.capitalize()
+                it.capitalize(Locale.ROOT)
             }
             .shuffled()
         //om antalet lag är 1 under antalet spelare så tar vi en spelare i taget
