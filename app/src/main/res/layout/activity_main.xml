@@ -40,6 +40,8 @@
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/autour_one"
+            android:inputType="number"
+            android:maxLength="2"
             android:text="2"
             android:textAlignment="center"
             android:textSize="30sp" />

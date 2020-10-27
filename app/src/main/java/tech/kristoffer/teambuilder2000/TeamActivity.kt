@@ -7,8 +7,8 @@ import kotlinx.android.synthetic.main.activity_team.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.ceil
-
-
+import kotlin.math.floor
+import kotlin.math.round
 
 
 class TeamActivity : AppCompatActivity() {
@@ -38,23 +38,32 @@ class TeamActivity : AppCompatActivity() {
                 it.capitalize(Locale.ROOT)
             }
             .shuffled()
-        //om antalet lag är 1 under antalet spelare så tar vi en spelare i taget
-        //tills vi har teamNumber-1, sen blir resterande sista laget
-        //annars används inbyggda windowed
-        val teams = if (teamNumber == shuffledPlayers.size-1){
-            val mutList: MutableList<List<String>> = ArrayList()
-            for (i in 0 until teamNumber-1){
-                mutList.add(listOf(shuffledPlayers[i]))
 
-            }
-            mutList.add(shuffledPlayers.subList(teamNumber-1, shuffledPlayers.size))
-            mutList
-        } else{
-            val limit = ceil((shuffledPlayers.size / teamNumber.toDouble())).toInt()
-            shuffledPlayers.windowed(limit, limit, true)
+        //Skapa antalet lag och ge varje en en spelare
+        val allTeams: MutableList<Team> = ArrayList()
+        for (i in 0 until teamNumber) {
+            val newTeam = Team()
+            newTeam.addPlayer(shuffledPlayers[i])
+            println(shuffledPlayers[i])
+            allTeams.add(newTeam)
         }
 
-        val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, teams)
+        //Börja om från första laget och gå igenom alla kvarstående namn och lägg dem i ett lag, repeat
+        var teamIndex = 0
+        for(i in teamNumber until shuffledPlayers.size){
+            val name = shuffledPlayers[i]
+            allTeams[teamIndex].addPlayer(name)
+            if(teamIndex == teamNumber - 1){
+                teamIndex = 0
+            }
+            else{
+                teamIndex++
+            }
+        }
+
+
+
+        val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, allTeams)
         lstview.adapter = arrayAdapter
     }
 

@@ -16,13 +16,13 @@ class TeamView(v: View) {
 class TeamAdapter(
     context: Context,
     private val resource: Int,
-    private val teams: List<List<String>>
+    private val teams: List<Team>
 ) : ArrayAdapter<List<List<String>>>(context, resource) {
 
     private val inflater = LayoutInflater.from(context)
 
-    private val teamPrefix = listOf("Flying", "Mighty", "Powerful", "Amazing", "Beautiful", "Agile")
-    private val teamSuffix = listOf("Cobras", "Gorillas", "Gingers", "Tigers", "Lemurs", "Squirrels")
+    private val teamPrefix = listOf("Flying", "Mighty", "Powerful", "Amazing", "Beautiful", "Agile", "Intelligent", "Courageous")
+    private val teamSuffix = listOf("Cobras", "Gorillas", "Gingers", "Tigers", "Lemurs", "Squirrels", "Kangaroos", "Panthers")
     private fun createTeamName(): String = "${teamPrefix.random()} ${teamSuffix.random()}"
 
     override fun getCount(): Int {
@@ -40,10 +40,9 @@ class TeamAdapter(
             view = convertView
             viewHolder = view.tag as TeamView
         }
-
         val currentTeam = teams[position]
         viewHolder.teamName.text = createTeamName()
-        viewHolder.teamMembers.text = currentTeam.joinToString("\n")
+        viewHolder.teamMembers.text = currentTeam.players.joinToString("\n")
         return view
     }
 
