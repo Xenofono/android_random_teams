@@ -21,9 +21,6 @@ class TeamAdapter(
 
     private val inflater = LayoutInflater.from(context)
 
-    private val teamPrefix = listOf("Flying", "Mighty", "Powerful", "Amazing", "Beautiful", "Agile", "Intelligent", "Courageous")
-    private val teamSuffix = listOf("Cobras", "Gorillas", "Gingers", "Tigers", "Lemurs", "Squirrels", "Kangaroos", "Panthers")
-    private fun createTeamName(): String = "${teamPrefix.random()} ${teamSuffix.random()}"
 
     override fun getCount(): Int {
         return teams.size
@@ -41,7 +38,7 @@ class TeamAdapter(
             viewHolder = view.tag as TeamView
         }
         val currentTeam = teams[position]
-        viewHolder.teamName.text = createTeamName()
+        viewHolder.teamName.text = currentTeam.teamName
         viewHolder.teamMembers.text = currentTeam.players.joinToString("\n")
         return view
     }
