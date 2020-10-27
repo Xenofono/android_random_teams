@@ -32,35 +32,29 @@ class TeamActivity : AppCompatActivity() {
 
     @ExperimentalStdlibApi
     private fun createTeams() {
-        val shuffledPlayers = playerNames.filter { it.isNotBlank() }
+
+        val allTeams = (0 until teamNumber)
+            .map { Team() }
+
+        tailrec fun addToTeam(  names: List<String>, teamIdx: Int = 0, nameIdx: Int = 0){
+            if (nameIdx == names.size) return
+            allTeams[teamIdx].addPlayer(names[nameIdx])
+            if (teamIdx == allTeams.size - 1) addToTeam(names,0, nameIdx+1 )
+            else addToTeam(names,teamIdx+1, nameIdx+1 )
+        }
+
+//        var idx = 0
+        val names = playerNames.filter { it.isNotBlank() }
             .map {
                 it.trim()
                 it.capitalize(Locale.ROOT)
             }
             .shuffled()
-
-        //Skapa antalet lag och ge varje en en spelare
-        val allTeams: MutableList<Team> = ArrayList()
-        for (i in 0 until teamNumber) {
-            val newTeam = Team()
-            newTeam.addPlayer(shuffledPlayers[i])
-            println(shuffledPlayers[i])
-            allTeams.add(newTeam)
-        }
-
-        //Börja om från första laget och gå igenom alla kvarstående namn och lägg dem i ett lag, repeat
-        var teamIndex = 0
-        for(i in teamNumber until shuffledPlayers.size){
-            val name = shuffledPlayers[i]
-            allTeams[teamIndex].addPlayer(name)
-            if(teamIndex == teamNumber - 1){
-                teamIndex = 0
-            }
-            else{
-                teamIndex++
-            }
-        }
-
+//            .forEach {
+//                allTeams[idx].addPlayer(it)
+//                if(idx == allTeams.size - 1) idx = 0 else idx++
+//            }
+        addToTeam(names)
 
 
         val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, allTeams)
