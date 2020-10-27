@@ -6,12 +6,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.activity_team.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.math.ceil
-import kotlin.math.floor
-import kotlin.math.round
 
 
-class TeamActivity : AppCompatActivity() {
+class TeamActivity<T> : AppCompatActivity() {
 
     lateinit var playerNames: ArrayList<String>
     var teamNumber: Int = 0
@@ -33,33 +30,33 @@ class TeamActivity : AppCompatActivity() {
     @ExperimentalStdlibApi
     private fun createTeams() {
 
-        val allTeams = (0 until teamNumber)
+        val teams = (0 until teamNumber)
             .map { Team() }
 
-        tailrec fun addToTeam(  names: List<String>, teamIdx: Int = 0, nameIdx: Int = 0){
-            if (nameIdx == names.size) return
-            allTeams[teamIdx].addPlayer(names[nameIdx])
-            if (teamIdx == allTeams.size - 1) addToTeam(names,0, nameIdx+1 )
-            else addToTeam(names,teamIdx+1, nameIdx+1 )
-        }
-
-//        var idx = 0
-        val names = playerNames.filter { it.isNotBlank() }
-            .map {
-                it.trim()
-                it.capitalize(Locale.ROOT)
-            }
+        playerNames.filter { it.isNotBlank() }
+            .map { it.trim().capitalize(Locale.ROOT) }
             .shuffled()
-//            .forEach {
-//                allTeams[idx].addPlayer(it)
-//                if(idx == allTeams.size - 1) idx = 0 else idx++
-//            }
-        addToTeam(names)
+            .chunked(teams.size)
+            .forEach{
+                it.zip(teams) {player, team -> team.addPlayer(player)}
+            }
 
-
-        val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, allTeams)
+        val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, teams)
         lstview.adapter = arrayAdapter
     }
 
 
+//    tailrec fun addToTeam(  names: List<String>, teamIdx: Int = 0, nameIdx: Int = 0){
+//        if (nameIdx == names.size) return
+//        teams[teamIdx].addPlayer(names[nameIdx])
+//        if (teamIdx == teams.size - 1) addToTeam(names,0, nameIdx+1 )
+//        else addToTeam(names,teamIdx+1, nameIdx+1 )
+//    }
+//fun List<String>.circleList(input: List<Team>) {
+//    var inputIndex = 0
+//    for (element in this) {
+//        input[inputIndex].addPlayer(element)
+//        if (inputIndex == input.size - 1) inputIndex = 0 else inputIndex++
+//    }
+//}
 }
