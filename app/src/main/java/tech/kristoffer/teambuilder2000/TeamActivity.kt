@@ -3,32 +3,48 @@ package tech.kristoffer.teambuilder2000
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlinx.android.synthetic.main.activity_team.*
+import kotlinx.android.synthetic.main.activity_team_list.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class TeamActivity<T> : AppCompatActivity() {
+class TeamActivity : AppCompatActivity() {
 
     lateinit var playerNames: ArrayList<String>
     var teamNumber: Int = 0
+    lateinit var finalTeams: List<Team>
+    var nextTeam = 0
+
+    private val updateNextTeam: () -> Unit = { if(nextTeam == finalTeams.size - 1) nextTeam = 0 else nextTeam++ }
+
+
 
     @ExperimentalStdlibApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (supportActionBar != null)
             supportActionBar?.hide()
-        val layout = layoutInflater.inflate(R.layout.activity_team, null) as ConstraintLayout
+        val layout = layoutInflater.inflate(R.layout.activity_team_list, null) as ConstraintLayout
         setContentView(layout)
-        val extras = intent.extras
 
-        playerNames = extras?.getStringArrayList("list") as ArrayList<String>
-        teamNumber = extras.getInt("teams")
-        createTeams()
+        if(savedInstanceState != null){
+            finalTeams = savedInstanceState.getParcelableArrayList<Team>("teams") as ArrayList<Team>
+            nextTeam = savedInstanceState.getInt("nextTeam")
+        }
+        else{
+            val extras = intent.extras
+            playerNames = extras?.getStringArrayList("list") as ArrayList<String>
+            teamNumber = extras.getInt("teams")
+            val teams = createTeams()
+            finalTeams = teams
+        }
+        lstview.adapter = TeamAdapter(this, R.layout.activity_team, finalTeams, {nextTeam}, updateNextTeam)
+
+
     }
 
     @ExperimentalStdlibApi
-    private fun createTeams() {
+    private fun createTeams(): List<Team> {
 
         val teams = (0 until teamNumber)
             .map { Team() }
@@ -40,13 +56,18 @@ class TeamActivity<T> : AppCompatActivity() {
             .forEach{
                 it.zip(teams) {player, team -> team.addPlayer(player)}
             }
-
-        val arrayAdapter = TeamAdapter(this, R.layout.activity_list_team, teams)
-        lstview.adapter = arrayAdapter
+        return teams
     }
 
 
-//    tailrec fun addToTeam(  names: List<String>, teamIdx: Int = 0, nameIdx: Int = 0){
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelableArrayList("teams", ArrayList<Team>(finalTeams))
+        outState.putInt("nextTeam", nextTeam)
+    }
+
+    //    tailrec fun addToTeam(  names: List<String>, teamIdx: Int = 0, nameIdx: Int = 0){
 //        if (nameIdx == names.size) return
 //        teams[teamIdx].addPlayer(names[nameIdx])
 //        if (teamIdx == teams.size - 1) addToTeam(names,0, nameIdx+1 )
