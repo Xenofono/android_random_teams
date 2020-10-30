@@ -24,7 +24,11 @@ class MainActivity : AppCompatActivity() {
         val btn = findViewById<Button>(R.id.calcBtn)
         btn.setOnClickListener{
             val numTeams: Int = teams.text.toString().toInt()
-            val names: List<String> = text.text.split("\\s+".toRegex())
+
+            val names: List<String> = text.text
+                .trim()
+                .split("\\s+".toRegex())
+
             if(numTeams <= names.size && numTeams >= 1){
 
                 val menuIntent = Intent(this, TeamActivity::class.java)
@@ -35,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
             else{
                 Toast.makeText(this,
-                    "Antalet lag måste vara fler än spelare, antalet lag måste vara minst 1",
+                    "Antalet spelare måste vara fler än antalet lag, antalet lag måste vara minst 1",
                     Toast.LENGTH_LONG).show()
             }
 
